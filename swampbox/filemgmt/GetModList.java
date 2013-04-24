@@ -14,8 +14,8 @@ public class GetModList {
 		String[][] coremods = getURLs(coremodIndex,"coremods");
 		String[][] configs = getURLs(configIndex,"config");
 		
-		patchFiles(mods,"mods");
-		patchFiles(coremods,"coremods");
+		//patchFiles(mods,"mods");
+		//patchFiles(coremods,"coremods");
 		patchFiles(configs,"config");
 		
 	}
@@ -54,20 +54,29 @@ public class GetModList {
 		byte[] buffer = new byte[1024];
 		int bytesRead;
 		
-		String installLoc = "C:\\Users\\Jeff\\Documents\\";
+		String installLoc = "C:/Users/Jeff/Documents/test/";
+		
+		
 		for(int i = 0; i < fileList.length; i++){
 			URL path = new URL(fileList[i][0]);
 			BufferedInputStream inputStream = null;
 			BufferedOutputStream outputStream = null;
 			URLConnection connection = path.openConnection();
 			inputStream = new BufferedInputStream(connection.getInputStream());
-			File f = new File(installLoc + subdir + "\\" + fileList[i][1]);
+			File f = new File(installLoc + subdir + "/" + fileList[i][1]);
+			if(f.exists()){
+				System.out.println("(" + (i+1) + "/" + fileList.length + ") Found: " + fileList[i][1] + ", skipping...");
+				continue;
+			}
+			f.mkdirs();
 			outputStream = new BufferedOutputStream(new FileOutputStream(f));
 			while((bytesRead = inputStream.read(buffer)) != -1){
 				outputStream.write(buffer, 0, bytesRead);
 			}
 			inputStream.close();
 			outputStream.close();
+			System.out.println("(" + (i+1) + "/" + fileList.length + ") Downloaded: " + fileList[i][1]);
 		}
+		System.out.println("\nDownload Complete: " + subdir + "\n");
 	}
 }
