@@ -56,6 +56,8 @@ public class GetModList {
 		
 		String installLoc = "C:/Users/Jeff/Documents/test/";
 		
+		File dirBuilder = new File(installLoc + subdir);
+		dirBuilder.mkdirs();
 		
 		for(int i = 0; i < fileList.length; i++){
 			URL path = new URL(fileList[i][0]);
@@ -68,7 +70,6 @@ public class GetModList {
 				System.out.println("(" + (i+1) + "/" + fileList.length + ") Found: " + fileList[i][1] + ", skipping...");
 				continue;
 			}
-			f.mkdirs();
 			outputStream = new BufferedOutputStream(new FileOutputStream(f));
 			while((bytesRead = inputStream.read(buffer)) != -1){
 				outputStream.write(buffer, 0, bytesRead);
